@@ -287,6 +287,11 @@ export function devOptions(yargs: CommonYargsArgv) {
 				// Yargs requires this to type log-level properly
 				default: "log" as LoggerLevel,
 			})
+			.option("skip-watch", {
+				type: "boolean",
+				describe: "Skip watching for changes",
+				default: false,
+			})
 	);
 }
 
@@ -372,7 +377,7 @@ export async function startDev(args: StartDevOptions) {
 			(args.script && findWranglerToml(path.dirname(args.script)));
 		let config = readConfig(configPath, args);
 
-		if (config.configPath) {
+		if (config.configPath && !args.skipWatch) {
 			watcher = watch(config.configPath, {
 				persistent: true,
 			}).on("change", async (_event) => {
@@ -476,6 +481,7 @@ export async function startDev(args: StartDevOptions) {
 					testScheduled={args.testScheduled}
 					experimentalLocal={args.experimentalLocal}
 					experimentalLocalRemoteKv={args.experimentalLocalRemoteKv}
+					skipWatch={args.skipWatch}
 				/>
 			);
 		}
@@ -609,6 +615,7 @@ export async function startApiDev(args: StartDevOptions) {
 			experimentalLocal: args.experimentalLocal,
 			experimentalLocalRemoteKv: args.experimentalLocalRemoteKv,
 			disableDevRegistry: args.disableDevRegistry ?? false,
+			skipWatch: args.skipWatch,
 		});
 	}
 

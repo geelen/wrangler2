@@ -264,6 +264,7 @@ with
 "@miniflare/d1": "file:../../../miniflare/packages/d1",
 "@miniflare/core": "file:../../../miniflare/packages/core",
 "@miniflare/durable-objects": "file:../../../miniflare/packages/durable-objects",
+"@miniflare/web-sockets": "file:../../../miniflare/packages/web-sockets",
 ```
 
 Then run `npm install` in the root of this monorepo.

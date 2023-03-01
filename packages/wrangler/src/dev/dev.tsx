@@ -156,6 +156,7 @@ export type DevProps = {
 	testScheduled: boolean | undefined;
 	experimentalLocal: boolean | undefined;
 	experimentalLocalRemoteKv: boolean | undefined;
+	skipWatch: boolean;
 };
 
 export function DevImplementation(props: DevProps): JSX.Element {
@@ -292,6 +293,7 @@ function DevSession(props: DevSessionProps) {
 		targetConsumer: "dev",
 		testScheduled: props.testScheduled ?? false,
 		experimentalLocal: props.experimentalLocal,
+		skipWatch: props.skipWatch,
 	});
 
 	// TODO(queues) support remote wrangler dev

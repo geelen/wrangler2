@@ -17,11 +17,16 @@ export function Options(yargs: CommonYargsArgv) {
 			type: "string",
 			demandOption: true,
 		})
+		.option("db-version", {
+			describe: "The tier of the new DB",
+			type: "string",
+		})
 		.epilogue(d1BetaWarning);
 }
 
 export async function Handler({
 	name,
+	dbVersion,
 }: StrictYargsOptionsToInterface<typeof Options>): Promise<void> {
 	const accountId = await requireAuth({});
 
@@ -29,6 +34,8 @@ export async function Handler({
 
 	let db: Database;
 	try {
+		// For now "v1.1" means "repication_tier = 1 (Primary)"
+		const replication_tier = dbVersion === "1.1" ? 1 : 0;
 		db = await fetchResult(`/accounts/${accountId}/d1/database`, {
 			method: "POST",
 			headers: {
@@ -36,6 +43,7 @@ export async function Handler({
 			},
 			body: JSON.stringify({
 				name,
+				replication_tier,
 			}),
 		});
 	} catch (e) {

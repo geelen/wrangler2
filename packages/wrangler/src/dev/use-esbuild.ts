@@ -42,6 +42,7 @@ export function useEsbuild({
 	targetConsumer,
 	testScheduled,
 	experimentalLocal,
+	skipWatch,
 }: {
 	entry: Entry;
 	destination: string | undefined;
@@ -64,6 +65,7 @@ export function useEsbuild({
 	targetConsumer: "dev" | "publish";
 	testScheduled: boolean;
 	experimentalLocal: boolean | undefined;
+	skipWatch: boolean;
 }): EsbuildBundle | undefined {
 	const [bundle, setBundle] = useState<EsbuildBundle>();
 	const { exit } = useApp();
@@ -118,7 +120,7 @@ export function useEsbuild({
 						jsxFactory,
 						jsxFragment,
 						rules,
-						watch: watchMode,
+						watch: skipWatch ? undefined : watchMode,
 						tsconfig,
 						minify,
 						nodeCompat,
@@ -145,7 +147,7 @@ export function useEsbuild({
 
 			// if "noBundle" is true, then we need to manually watch the entry point and
 			// trigger "builds" when it changes
-			if (noBundle) {
+			if (noBundle && !skipWatch) {
 				const watcher = watch(entry.file, {
 					persistent: true,
 				}).on("change", async (_event) => {

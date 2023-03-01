@@ -47,6 +47,7 @@ export interface UnstableDevOptions {
 	inspect?: boolean;
 	local?: boolean;
 	accountId?: string;
+	skipWatch?: boolean;
 	experimental?: {
 		d1Databases?: Environment["d1_databases"];
 		disableExperimentalWarning?: boolean; // Disables wrangler's warning when unstable APIs are used.
@@ -185,6 +186,7 @@ export async function unstable_dev(
 					experimentalEnableLocalPersistence: undefined,
 					legacyEnv: undefined,
 					public: undefined,
+					skipWatch: !!options?.skipWatch,
 					...options,
 				});
 			}).then((devServer) => {
@@ -274,6 +276,7 @@ export async function unstable_dev(
 					experimentalEnableLocalPersistence: undefined,
 					legacyEnv: undefined,
 					public: undefined,
+					skipWatch: !!options?.skipWatch,
 					...options,
 				});
 			}).then((devServer) => {
